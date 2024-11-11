@@ -1,21 +1,24 @@
 import pygame
 import sys
+from tabuleiro import tabuleiros
 
 # Inicialização do Pygame
 pygame.init()
 
 # configurando a tela inicial e cores
-LARGURA = 1280
-ALTURA = 720
+LARGURA = 900
+ALTURA = 600
 tela = pygame.display.set_mode((LARGURA, ALTURA))
+temporizador= pygame.time.Clock()
+fps= 60
 pygame.display.set_caption("Rato e Gatos - Menu")
+fonte = pygame.font.Font('freesansbold.ttf', 40)
+level= tabuleiros
 
 COR_FUNDO = (2, 13, 63)
 COR_TEXTO = (255, 255, 0)
 COR_DESTAQUE = (100, 100, 255)
 
-# fonte e tamanho do texto
-fonte = pygame.font.Font('freesansbold.ttf', 40)
 
 # primeira função para exibir o texto na tela
 def exibir_texto(texto, fonte, cor, posicao):
@@ -26,9 +29,12 @@ def exibir_texto(texto, fonte, cor, posicao):
 # loop principal para inicializar pygame
 rodando = True
 while rodando:
+    temporizador.tick(fps)
+    
     tela.fill(COR_FUNDO)
     jogar_retangulo = exibir_texto("Jogar", fonte, COR_TEXTO, (LARGURA // 2, ALTURA // 2 - 50))
     sair_retangulo = exibir_texto("Sair", fonte, COR_TEXTO, (LARGURA // 2, ALTURA // 2 + 50))
+    
     #for de saída
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
