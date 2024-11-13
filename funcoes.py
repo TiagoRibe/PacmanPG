@@ -16,6 +16,10 @@ PI= math.pi
 COR_TEXTO = (255, 255, 0)
 COR_DESTAQUE = (100, 100, 255)
 
+fotos_gato= []
+for i in range(1, 5):
+    fotos_gato.append(pygame.transform.scale(pygame.image.load(f'imagens/Fotos_rato/{i}.png'),(45,45)))
+
 def exibir_texto(texto, fonte, cor, posicao):
     texto_superficie = fonte.render(texto, True, cor)
     texto_retangulo = texto_superficie.get_rect(center=posicao)
