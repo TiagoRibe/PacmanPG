@@ -5,6 +5,14 @@ from tabuleiro import tabuleiros
 COR = 'blue'
 PI = math.pi
 
+fotos_gato= []
+for i in range(1, 5):
+    fotos_gato.append(pygame.transform.scale(pygame.image.load(f'imagens/Fotos_rato/{i}.png'),(45,45)))
+direcao= 0
+jogador_x = 450
+jogador_y = 660
+cont= 0 #contador
+
 def desenha_jogador(tela, fotos_gato, jogador_x, jogador_y, direcao, cont):
     if direcao == 0:
         tela.blit(fotos_gato[cont // 5], (jogador_x, jogador_y))
