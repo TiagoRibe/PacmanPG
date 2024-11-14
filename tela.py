@@ -3,7 +3,7 @@ import sys
 from tabuleiro import tabuleiros
 from funcoes import *
 import math
-
+##
 # Inicialização do Pygame
 pygame.init()
 
@@ -38,6 +38,7 @@ while rodando:
             sys.exit()
         elif evento.type == pygame.MOUSEBUTTONDOWN:
             if jogar_retangulo.collidepoint(evento.pos):
+                desenha_tabuleiro
                 print("Jogo Iniciado")  # Aqui você pode chamar a função do jogo principal
                 rodando = False  # Sai do loop da tela de início para iniciar o jogo
             elif sair_retangulo.collidepoint(evento.pos):
