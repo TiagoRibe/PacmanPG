@@ -6,23 +6,24 @@ from config import *
 COR = 'blue'
 PI = math.pi
 
-fotos_gato= []
+fotos_rato= []
 for i in range(1, 5):
-    fotos_gato.append(pygame.transform.scale(pygame.image.load(f'imagens/Fotos_rato/{i}.png'),(45,45)))
+    fotos_rato.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_rato/{i}.png'),(45,45)))
 direcao= 0
-jogador_x = 450
-jogador_y = 660
+jogador_x = 430
+jogador_y = 540
 cont= 0 #contador
+pisca= False
 
 def desenha_jogador():
     if direcao == 0:
-        tela.blit(fotos_gato[cont // 5], (jogador_x, jogador_y))
+        tela.blit(fotos_rato[cont // 5], (jogador_x, jogador_y))
     elif direcao == 1:
-        tela.blit(pygame.transform.flip(fotos_gato[cont // 5], True, False), (jogador_x, jogador_y))
+        tela.blit(pygame.transform.flip(fotos_rato[cont // 5], True, False), (jogador_x, jogador_y))
     elif direcao == 2:
-        tela.blit(pygame.transform.rotate(fotos_gato[cont // 5], 90), (jogador_x, jogador_y))
+        tela.blit(pygame.transform.rotate(fotos_rato[cont // 5], 90), (jogador_x, jogador_y))
     elif direcao == 3:
-        tela.blit(pygame.transform.rotate(fotos_gato[cont // 5], 270), (jogador_x, jogador_y))
+        tela.blit(pygame.transform.rotate(fotos_rato[cont // 5], 270), (jogador_x, jogador_y))
 
 def exibir_texto(texto, fonte, cor, posicao):
     texto_superficie = fonte.render(texto, True, cor)
@@ -39,7 +40,7 @@ def desenha_tabuleiro():
             pos_y = i * num1 + (0.5 * num1)
             if level[i][j] == 1:
                 pygame.draw.circle(tela, 'white', (pos_x, pos_y), 4)
-            elif level[i][j] == 2:
+            elif level[i][j] == 2 and not pisca:
                 pygame.draw.circle(tela, 'white', (pos_x, pos_y), 10)
             elif level[i][j] == 3:
                 pygame.draw.line(tela, COR, (pos_x, i * num1), (pos_x, i * num1 + num1), 3)
