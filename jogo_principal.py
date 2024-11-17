@@ -18,27 +18,27 @@ PI = math.pi
 imagens_jogador = []
 for i in range(1, 5):
     imagens_jogador.append(pygame.transform.scale(pygame.image.load(f'assets/player_images/{i}.png'), (45, 45)))
-imagem_blinky = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/red.png'), (45, 45))
-imagem_pinky = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/pink.png'), (45, 45))
-imagem_inky = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/blue.png'), (45, 45))
-imagem_clyde = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/orange.png'), (45, 45))
+imagem_gato2 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/red.png'), (45, 45))
+imagem_gato4 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/pink.png'), (45, 45))
+imagem_gato3 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/blue.png'), (45, 45))
+imagem_gato1 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/orange.png'), (45, 45))
 imagem_assustado = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/powerup.png'), (45, 45))
 imagem_morto = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/dead.png'), (45, 45))
 jogador_x = 450
 jogador_y = 663
 direcao = 0
-blinky_x = 56
-blinky_y = 58
-direcao_blinky = 0
-inky_x = 440
-inky_y = 388
-direcao_inky = 2
-pinky_x = 440
-pinky_y = 438
-direcao_pinky = 2
-clyde_x = 440
-clyde_y = 438
-direcao_clyde = 2
+gato2_x = 56
+gato2_y = 58
+direcao_gato2 = 0
+gato3_x = 440
+gato3_y = 388
+direcao_gato3 = 2
+gato4_x = 440
+gato4_y = 438
+direcao_gato4 = 2
+gato1_x = 440
+gato1_y = 438
+direcao_gato1 = 2
 contador = 0
 piscar = False
 # D, E, C, B
@@ -50,14 +50,14 @@ powerup_ativo = False
 contador_powerup = 0
 fantasmas_comidos = [False, False, False, False]
 alvos = [(jogador_x, jogador_y), (jogador_x, jogador_y), (jogador_x, jogador_y), (jogador_x, jogador_y)]
-blinky_morto = False
-inky_morto = False
-clyde_morto = False
-pinky_morto = False
-blinky_na_casa = False
-inky_na_casa = False
-clyde_na_casa = False
-pinky_na_casa = False
+gato2_morto = False
+gato3_morto = False
+gato1_morto = False
+gato4_morto = False
+gato2_na_casa = False
+gato3_na_casa = False
+gato1_na_casa = False
+gato4_na_casa = False
 em_movimento = False
 velocidades_fantasmas = [2, 2, 2, 2]
 contador_inicio = 0
@@ -410,3 +410,245 @@ class Fantasma:
             self.pos_x - 30
         return self.pos_x, self.pos_y, self.direcao
     
+    def movimento_gato3(self):
+        if self.direcao == 0:
+            if self.alvo[0] > self.pos_x and self.giros[0]:
+                self.pos_x += self.velocidade
+            elif not self.giros[0]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+            elif self.giros[0]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                if self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                else:
+                    self.pos_x += self.velocidade
+        elif self.direcao == 1:
+            if self.alvo[1] > self.pos_y and self.giros[3]:
+                self.direcao = 3
+            elif self.alvo[0] < self.pos_x and self.giros[1]:
+                self.pos_x -= self.velocidade
+            elif not self.giros[1]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+            elif self.giros[1]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                if self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                else:
+                    self.pos_x -= self.velocidade
+        elif self.direcao == 2:
+            if self.alvo[1] < self.pos_y and self.giros[2]:
+                self.direcao = 2
+                self.pos_y -= self.velocidade
+            elif not self.giros[2]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+            elif self.giros[2]:
+                self.pos_y -= self.velocidade
+        elif self.direcao == 3:
+            if self.alvo[1] > self.pos_y and self.giros[3]:
+                self.pos_y += self.velocidade
+            elif not self.giros[3]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+            elif self.giros[3]:
+                self.pos_y += self.velocidade
+        if self.pos_x < -30:
+            self.pos_x = 900
+        elif self.pos_x > 900:
+            self.pos_x - 30
+        return self.pos_x, self.pos_y, self.direcao
+    
+    def movimento_gato4(self):
+        if self.direcao == 0:
+            if self.alvo[0] > self.pos_x and self.giros[0]:
+                self.pos_x += self.velocidade
+            elif not self.giros[0]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+            elif self.giros[0]:
+                self.pos_x += self.velocidade
+        elif self.direcao == 1:
+            if self.alvo[1] > self.pos_y and self.giros[3]:
+                self.direcao = 3
+            elif self.alvo[0] < self.pos_x and self.giros[1]:
+                self.pos_x -= self.velocidade
+            elif not self.giros[1]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+            elif self.giros[1]:
+                self.pos_x -= self.velocidade
+        elif self.direcao == 2:
+            if self.alvo[0] < self.pos_x and self.giros[1]:
+                self.direcao = 1
+                self.pos_x -= self.velocidade
+            elif self.alvo[1] < self.pos_y and self.giros[2]:
+                self.direcao = 2
+                self.pos_y -= self.velocidade
+            elif not self.giros[2]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.alvo[1] > self.pos_y and self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+            elif self.giros[2]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                else:
+                    self.pos_y -= self.velocidade
+        elif self.direcao == 3:
+            if self.alvo[1] > self.pos_y and self.giros[3]:
+                self.pos_y += self.velocidade
+            elif not self.giros[3]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
+                elif self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+            elif self.giros[3]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                else:
+                    self.pos_y += self.velocidade
+        if self.pos_x < -30:
+            self.pos_x = 900
+        elif self.pos_x > 900:
+            self.pos_x - 30
+        return self.pos_x, self.pos_y, self.direcao
