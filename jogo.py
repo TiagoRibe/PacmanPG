@@ -17,8 +17,8 @@ while rodando:
     desenha_jogador () #essa aqui também
     desenha_tabuleiro () #aqui, teria os argumentos, mas nao sei quais colocar
     # Exibe opções de jogo
-    jogar_retangulo = exibir_texto("Jogar", fonte, COR_TEXTO, (450, 400), tela)
-    sair_retangulo = exibir_texto("Sair", fonte, COR_TEXTO, (450, 500), tela)
+    jogar_retangulo = exibir_texto("Jogar", fonte, COR_TEXTO, (450, 400))
+    sair_retangulo = exibir_texto("Sair", fonte, COR_TEXTO, (450, 500))
 
     # Verifica eventos
     for evento in pygame.event.get():

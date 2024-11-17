@@ -14,6 +14,7 @@ temporizador = pygame.time.Clock()
 fps = 60
 nivel = copy.deepcopy(tabuleiros)
 fonte = pygame.font.Font('freesansbold.ttf', 40)
+level= tabuleiros
 COR_TEXTO = (255, 255, 0)
 COR_DESTAQUE = (100, 100, 255)
 COR = 'blue'
