@@ -719,3 +719,63 @@ def desenha_jogador():
         tela.blit(pygame.transform.rotate(fotos_rato[contador // 5], 90), (jogador_x, jogador_y))
     elif direcao == 3:
         tela.blit(pygame.transform.rotate(fotos_rato[contador // 5], 270), (jogador_x, jogador_y))
+
+def checa_posicao(centerx, centery):
+    virar = [False, False, False, False]
+    num1 = (ALTURA - 50) // 32
+    num2 = (LARGURA // 30)
+    num3 = 15
+
+    #checa colisao baseado no centro x e centro y
+    if centerx // 30 < 29:
+        if direcao == 0:
+            if nivel[centery // num1][(centerx - num3) // num2] < 3:
+                virar[1] = True
+        if direcao == 1:
+            if nivel[centery // num1][(centerx + num3) // num2] < 3:
+                virar[0] = True
+        if direcao == 2:
+            if nivel[(centery + num3) // num1][centerx // num2] < 3:
+                virar[3] = True
+        if direcao == 3:
+            if nivel[(centery - num3) // num1][centerx // num2] < 3:
+                virar[2] = True
+
+        if direcao == 2 or direcao == 3:
+            if 12 <= centerx % num2 <= 18:
+                if nivel[(centery + num3) // num1][centerx // num2] < 3:
+                    virar[3] = True
+                if nivel[(centery - num3) // num1][centerx // num2] < 3:
+                    virar[2] = True
+            if 12 <= centery % num1 <= 18:
+                if nivel[centery // num1][(centerx - num2) // num2] < 3:
+                    virar[1] = True
+                if nivel[centery // num1][(centerx + num2) // num2] < 3:
+                    virar[0] = True
+        if direcao == 0 or direcao == 1:
+            if 12 <= centerx % num2 <= 18:
+                if nivel[(centery + num1) // num1][centerx // num2] < 3:
+                    virar[3] = True
+                if nivel[(centery - num1) // num1][centerx // num2] < 3:
+                    virar[2] = True
+            if 12 <= centery % num1 <= 18:
+                if nivel[centery // num1][(centerx - num3) // num2] < 3:
+                    virar[1] = True
+                if nivel[centery // num1][(centerx + num3) // num2] < 3:
+                    virar[0] = True
+    else:
+        virar[0] = True
+        virar[1] = True
+
+    return virar
+
+def movimentacao(eixo_x, eixo_y):
+    if direcao == 0 and giros_permitidos[0]:
+        eixo_x += velocidade_jogador
+    elif direcao == 1 and giros_permitidos[1]:
+        eixo_x -= velocidade_jogador
+    if direcao == 2 and giros_permitidos[2]:
+        eixo_y -= velocidade_jogador
+    elif direcao == 3 and giros_permitidos[3]:
+        eixo_y += velocidade_jogador
+    return eixo_x, eixo_y
