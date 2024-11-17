@@ -8,8 +8,14 @@ from config import *
 rodando = True
 while rodando:
     temporizador.tick(fps)
-    tela.fill('black')
+    if cont < 19:
+        cont += 1 #esse loop aq n tem nada haver, so seguindo o video memo
+    else:
+        cont = 0
 
+    tela.fill('black')
+    desenha_jogador ()
+    desenha_tabuleiro () #aqui, teria os argumentos, mas nao sei quais colocar
     # Exibe opções de jogo
     jogar_retangulo = exibir_texto("Jogar", fonte, COR_TEXTO, (450, 400), tela)
     sair_retangulo = exibir_texto("Sair", fonte, COR_TEXTO, (450, 500), tela)
