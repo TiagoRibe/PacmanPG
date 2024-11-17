@@ -14,7 +14,7 @@ while rodando:
         cont = 0
 
     tela.fill('black')
-    desenha_jogador ()
+    desenha_jogador () #essa aqui também
     desenha_tabuleiro () #aqui, teria os argumentos, mas nao sei quais colocar
     # Exibe opções de jogo
     jogar_retangulo = exibir_texto("Jogar", fonte, COR_TEXTO, (450, 400), tela)

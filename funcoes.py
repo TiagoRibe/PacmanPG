@@ -1,6 +1,7 @@
 import pygame
 import math
 from tabuleiro import tabuleiros
+from config import *
 
 COR = 'blue'
 PI = math.pi
@@ -54,3 +55,65 @@ def desenha_tabuleiro(tela, level, largura=900, altura=800, cor=COR):
                 pygame.draw.arc(tela, cor, [(j * num2 - (num2 * 0.4)) - 2, (i * num1 - (0.4 * num1)), num2, num1], 3 * PI / 2, 2 * PI, 3)
             elif level[i][j] == 9:
                 pygame.draw.line(tela, 'white', (j * num2, pos_y), (j * num2 + num2, pos_y), 3)
+
+
+#funcao que checa a posição
+def posicao(centerx, centery):
+    virar = [False, False, False, False]
+    num1 = (ALTURA - 50) // 32
+    num2 = (LARGURA // 30)
+    num3 = 15
+
+    if centerx // 30 < 29:
+        if direcao == 0:
+            if nivel[centery // num1][(centerx - num3) // num2] < 3:
+                virar[1] = True
+        if direcao == 1:
+            if nivel[centery // num1][(centerx + num3) // num2] < 3:
+                virar[0] = True
+        if direcao == 2:
+            if nivel[(centery + num3) // num1][centerx // num2] < 3:
+                virar[3] = True
+        if direcao == 3:
+            if nivel[(centery - num3) // num1][centerx // num2] < 3:
+                virar[2] = True
+
+        if direcao == 2 or direcao == 3:
+            if 12 <= centerx % num2 <= 18:
+                if nivel[(centery + num3) // num1][centerx // num2] < 3:
+                    virar[3] = True
+                if nivel[(centery - num3) // num1][centerx // num2] < 3:
+                    virar[2] = True
+            if 12 <= centery % num1 <= 18:
+                if nivel[centery // num1][(centerx - num2) // num2] < 3:
+                    virar[1] = True
+                if nivel[centery // num1][(centerx + num2) // num2] < 3:
+                    virar[0] = True
+        if direcao == 0 or direcao == 1:
+            if 12 <= centerx % num2 <= 18:
+                if nivel[(centery + num1) // num1][centerx // num2] < 3:
+                    virar[3] = True
+                if nivel[(centery - num1) // num1][centerx // num2] < 3:
+                    virar[2] = True
+            if 12 <= centery % num1 <= 18:
+                if nivel[centery // num1][(centerx - num3) // num2] < 3:
+                    virar[1] = True
+                if nivel[centery // num1][(centerx + num3) // num2] < 3:
+                    virar[0] = True
+    else:
+        virar[0] = True
+        virar[1] = True
+
+    return virar
+
+
+def movimentacao(eixo_x, eixo_y):
+    if direcao == 0 and pode_virar[0]:
+        eixo_x += velocidade_jogador
+    elif direcao == 1 and pode_virar[1]:
+        eixo_x -= velocidade_jogador
+    if direcao == 2 and pode_virar[2]:
+        eixo_y -= velocidade_jogador
+    elif direcao == 3 and pode_virar[3]:
+        eixo_y += velocidade_jogador
+    return eixo_x, eixo_y
