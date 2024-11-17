@@ -675,11 +675,11 @@ def checa_colisao(pont, poder, conta_poder, gatos_comidos):
     num1 = (ALTURA - 50) // 32
     num2 = LARGURA // 30
     if 0 < jogador_x < 870:
-        if nivel[centro_y // num1][center_x // num2] == 1:
-            nivel[centro_y // num1][center_x // num2] = 0
+        if nivel[centro_y // num1][centro_x // num2] == 1:
+            nivel[centro_y // num1][centro_x // num2] = 0
             pont += 10
-        if nivel[centro_y // num1][center_x // num2] == 2:
-            nivel[centro_y // num1][center_x // num2] = 0
+        if nivel[centro_y // num1][centro_x // num2] == 2:
+            nivel[centro_y // num1][centro_x // num2] = 0
             pont += 50
             poder = True
             conta_poder = 0
@@ -779,3 +779,235 @@ def movimentacao(eixo_x, eixo_y):
     elif direcao == 3 and giros_permitidos[3]:
         eixo_y += velocidade_jogador
     return eixo_x, eixo_y
+
+def obter_alvos(gato2_x, gato2_y, gato3_x, gato3_y, gato4_x, gato4_y, gato1_x, gato1_y):
+    if jogador_x < 450:
+        fugir_x = 900
+    else:
+        fugir_x = 0
+    if jogador_y < 450:
+        fugir_y = 900
+    else:
+        fugir_y = 0
+    alvo_retorno = (380, 400)
+    if powerup_ativo:
+        if not gato2_morto and not fantasmas_comidos[0]:
+            alvo_gato2 = (fugir_x, fugir_y)
+        elif not gato2_morto and fantasmas_comidos[0]:
+            if 340 < gato2_x < 560 and 340 < gato2_y < 500:
+                alvo_gato2 = (400, 100)
+            else:
+                alvo_gato2 = (jogador_x, jogador_y)
+        else:
+            alvo_gato2 = alvo_retorno
+        if not gato3_morto and not fantasmas_comidos[1]:
+            alvo_gato3 = (fugir_x, jogador_y)
+        elif not gato3_morto and fantasmas_comidos[1]:
+            if 340 < gato3_x < 560 and 340 < gato3_y < 500:
+                alvo_gato3 = (400, 100)
+            else:
+                alvo_gato3 = (jogador_x, jogador_y)
+        else:
+            alvo_gato3 = alvo_retorno
+        if not gato4_morto:
+            alvo_gato4 = (jogador_x, fugir_y)
+        elif not gato4_morto and fantasmas_comidos[2]:
+            if 340 < gato4_x < 560 and 340 < gato4_y < 500:
+                alvo_gato4 = (400, 100)
+            else:
+                alvo_gato4 = (jogador_x, jogador_y)
+        else:
+            alvo_gato4 = alvo_retorno
+        if not gato1_morto and not fantasmas_comidos[3]:
+            alvo_gato1 = (450, 450)
+        elif not gato1_morto and fantasmas_comidos[3]:
+            if 340 < gato1_x < 560 and 340 < gato1_y < 500:
+                alvo_gato1 = (400, 100)
+            else:
+                alvo_gato1 = (jogador_x, jogador_y)
+        else:
+            alvo_gato1 = alvo_retorno
+    else:
+        if not gato2_morto:
+            if 340 < gato2_x < 560 and 340 < gato2_y < 500:
+                alvo_gato2 = (400, 100)
+            else:
+                alvo_gato2 = (jogador_x, jogador_y)
+        else:
+            alvo_gato2 = alvo_retorno
+        if not gato3_morto:
+            if 340 < gato3_x < 560 and 340 < gato3_y < 500:
+                alvo_gato3 = (400, 100)
+            else:
+                alvo_gato3 = (jogador_x, jogador_y)
+        else:
+            alvo_gato3 = alvo_retorno
+        if not gato4_morto:
+            if 340 < gato4_x < 560 and 340 < gato4_y < 500:
+                alvo_gato4 = (400, 100)
+            else:
+                alvo_gato4 = (jogador_x, jogador_y)
+        else:
+            alvo_gato4 = alvo_retorno
+        if not gato1_morto:
+            if 340 < gato1_x < 560 and 340 < gato1_y < 500:
+                alvo_gato1 = (400, 100)
+            else:
+                alvo_gato1 = (jogador_x, jogador_y)
+        else:
+            alvo_gato1 = alvo_retorno
+    return [alvo_gato2, alvo_gato3, alvo_gato4, alvo_gato1]
+
+rodando = True
+
+def menu_inicio():
+    while True:
+        tela.fill('black')
+        fonte_menu = pygame.font.Font('freesansbold.ttf', 40)
+        texto_jogar = fonte_menu.render("Jogar", True, 'white')
+        texto_instrucoes = fonte_menu.render("Instruções", True, 'white')
+        texto_sair = fonte_menu.render("Sair", True, 'white')
+
+        pos_jogar = texto_jogar.get_rect(center=(LARGURA // 2, ALTURA // 3))
+        pos_instrucoes = texto_instrucoes.get_rect(center=(LARGURA // 2, ALTURA // 2))
+        pos_sair = texto_sair.get_rect(center=(LARGURA // 2, ALTURA * 2 // 3))
+
+        tela.blit(texto_jogar, pos_jogar)
+        tela.blit(texto_instrucoes, pos_instrucoes)
+        tela.blit(texto_sair, pos_sair)
+
+        pygame.display.update()
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if pos_jogar.collidepoint(evento.pos):
+                    return  # Sai do menu e inicia o jogo
+                elif pos_instrucoes.collidepoint(evento.pos):
+                    menu_instrucoes()
+                elif pos_sair.collidepoint(evento.pos):
+                    pygame.quit()
+                    exit()
+
+def menu_instrucoes():
+    while True:
+        tela.fill('black')
+        fonte_instrucoes = pygame.font.Font('freesansbold.ttf', 30)
+        texto_instrucoes = fonte_instrucoes.render(
+            "Objetivo: Comer todos os pontos sem ser pego pelos gatos!", True, 'white')
+        texto_movimento = fonte_instrucoes.render(
+            "Movimento: Use as setas para se mover.", True, 'white')
+        texto_voltar = fonte_instrucoes.render("Voltar", True, 'white')
+
+        pos_instrucoes = texto_instrucoes.get_rect(center=(LARGURA // 2, ALTURA // 3))
+        pos_movimento = texto_movimento.get_rect(center=(LARGURA // 2, ALTURA // 2))
+        pos_voltar = texto_voltar.get_rect(center=(LARGURA // 2, ALTURA * 2 // 3))
+
+        tela.blit(texto_instrucoes, pos_instrucoes)
+        tela.blit(texto_movimento, pos_movimento)
+        tela.blit(texto_voltar, pos_voltar)
+
+        pygame.display.update()
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if pos_voltar.collidepoint(evento.pos):
+                    return  # Volta para o menu principal
+
+# Início do programa
+menu_inicio()
+
+# Loop principal do jogo
+while rodando:
+    relogio.tick(fps)
+
+    if contador < 19:
+        contador += 1
+        if contador > 3:
+            piscar = False
+    else:
+        contador = 0
+        piscar = True
+
+    if powerup_ativo and contador_powerup < 600:
+        contador_powerup += 1
+    elif powerup_ativo and contador_powerup >= 600:
+        contador_powerup = 0
+        powerup_ativo = False
+        fantasmas_comidos = [False, False, False, False]
+
+    if contador_inicio < 180 and not jogo_encerrado and not jogo_vencido:
+        em_movimento = False
+        contador_inicio += 1
+    else:
+        em_movimento = True
+
+    tela.fill('black')
+    desenha_tabuleiro()
+    centro_x = jogador_x + 23
+    centro_y = jogador_y + 24
+
+    if powerup_ativo:
+        velocidades_gatos = [1, 1, 1, 1]
+    else:
+        velocidades_gatos = [2, 2, 2, 2]
+    if fantasmas_comidos[0]:
+        velocidades_gatos[0] = 2
+    if fantasmas_comidos[1]:
+        velocidades_gatos[1] = 2
+    if fantasmas_comidos[2]:
+        velocidades_gatos[2] = 2
+    if fantasmas_comidos[3]:
+        velocidades_gatos[3] = 2
+    if gato2_morto:
+        velocidades_gatos[0] = 4
+    if gato3_morto:
+        velocidades_gatos[1] = 4
+    if gato4_morto:
+        velocidades_gatos[2] = 4
+    if gato1_morto:
+        velocidades_gatos[3] = 4
+
+    jogo_vencido = True
+    for i in range(len(nivel)):
+        if 1 in nivel[i] or 2 in nivel[i]:
+            jogo_vencido = False
+
+    circulo_jogador = pygame.draw.circle(tela, 'black', (centro_x, centro_y), 20, 2)
+    desenha_jogador()
+
+    gato2 = Fantasma(gato2_x, gato2_y, alvos[0], velocidades_gatos[0], imagem_gato2, direcao_gato2, gato2_morto, 
+                 gato2_na_casa, 0)
+    gato3 = Fantasma(gato3_x, gato3_y, alvos[1], velocidades_gatos[1], imagem_gato3, direcao_gato3, gato3_morto, 
+                 gato3_na_casa, 1)
+    gato4 = Fantasma(gato4_x, gato4_y, alvos[2], velocidades_gatos[2], imagem_gato4, direcao_gato4, gato4_morto, 
+                 gato4_na_casa, 2)
+    gato1 = Fantasma(gato1_x, gato1_y, alvos[3], velocidades_gatos[3], imagem_gato1, direcao_gato1, gato1_morto, 
+                 gato1_na_casa, 3)
+
+    desenha_variavel()
+    alvos = obter_alvos(gato2_x, gato2_y, gato3_x, gato3_y, gato4_x, gato4_y, gato1_x, gato1_y)
+
+    giros_permitidos = checa_posicao(centro_x, centro_y)
+    if em_movimento:
+        jogador_x, jogador_y = movimentacao(jogador_x, jogador_y)
+        if not gato2_morto and not gato2.na_casa:
+            gato2_x, gato2_y, direcao_gato2 = gato2.mover_gato2()
+        else:
+            gato2_x, gato2_y, direcao_gato2 = gato2.mover_gato1()
+        if not gato4_morto and not gato4.na_casa:
+            gato4_x, gato4_y, direcao_gato4 = gato4.mover_gato4()
+        else:
+            gato4_x, gato4_y, direcao_gato4 = gato4.mover_gato1()
+        if not gato3_morto and not gato3.na_casa:
+            gato3_x, gato3_y, direcao_gato3 = gato3.mover_gato3()
+        else:
+            gato3_x, gato3_y, direcao_gato3 = gato3.mover_gato1()
+        gato1_x, gato1_y, direcao_gato1 = gato1.mover_gato1()
+
+    pontuacao, powerup_ativo, contador_powerup, fantasmas_comidos = checa_colisao(pontuacao, powerup_ativo, contador_powerup, fantasmas_comidos)
