@@ -23,13 +23,13 @@ fotos_gato2 = []
 fotos_gato3 = []
 fotos_gato4 = []
 for j in range(5,11):
-    fotos_gato1.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
-    fotos_gato2.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
-    fotos_gato3.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
-    fotos_gato4.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
+    fotos_gato1.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
+    fotos_gato2.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
+    fotos_gato3.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
+    fotos_gato4.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
 
-imagem_assustado = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/Hurt.png'), (45, 45))
-imagem_morto = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/Death.png'), (45, 45))
+imagem_assustado = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/Hurt.png'), (45, 45))
+imagem_morto = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/Death.png'), (45, 45))
 jogador_x = 450
 jogador_y = 663
 direcao = 0
