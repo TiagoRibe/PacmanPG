@@ -692,23 +692,32 @@ def desenha_tabuleiro():
     for i in range(len(nivel)):
         for j in range(len(nivel[i])):
             if nivel[i][j] == 1:
-                pygame.draw.circle(tela, 'white', (pos_x, pos_y), 4)
-            elif nivel[i][j] == 2:
-                pygame.draw.circle(tela, 'white', (pos_x, pos_y), 10)
-            elif nivel[i][j] == 3:
-                pygame.draw.line(tela, cor, (pos_x, i * num1), (pos_x, i * num1 + num1), 3)
-            elif nivel[i][j] == 4:
-                pygame.draw.line(tela, cor, (j * num2, pos_y), (j * num2 + num2, pos_y), 3)
-            elif nivel[i][j] == 5:
-                pygame.draw.arc(tela, cor, [(j * num2 - (num2 * 0.4)) - 2, pos_y, num2, num1], 0, PI / 2, 3)
-            elif nivel[i][j] == 6:
-                pygame.draw.arc(tela, cor, [(j * num2 + (num2 * 0.5)), pos_y, num2, num1], PI / 2, PI, 3)
-            elif nivel[i][j] == 7:
-                pygame.draw.arc(tela, cor, [(j * num2 + (num2 * 0.5)), (i * num1 - (0.4 * num1)), num2, num1], PI, 3 * PI / 2, 3)
-            elif nivel[i][j] == 8:
-                pygame.draw.arc(tela, cor, [(j * num2 - (num2 * 0.4)) - 2, (i * num1 - (0.4 * num1)), num2, num1], 3 * PI / 2, 2 * PI, 3)
-            elif nivel[i][j] == 9:
-                pygame.draw.line(tela, 'white', (j * num2, pos_y), (j * num2 + num2, pos_y), 3)
+                pygame.draw.circle(tela, 'white', (j * num2 + (0.5 * num2), i * num1 + (0.5 * num1)), 4)
+            if nivel[i][j] == 2 and not piscar:
+                pygame.draw.circle(tela, 'white', (j * num2 + (0.5 * num2), i * num1 + (0.5 * num1)), 10)
+            if nivel[i][j] == 3:
+                pygame.draw.line(tela, cor, (j * num2 + (0.5 * num2), i * num1),
+                                 (j * num2 + (0.5 * num2), i * num1 + num1), 3)
+            if nivel[i][j] == 4:
+                pygame.draw.line(tela, cor, (j * num2, i * num1 + (0.5 * num1)),
+                                 (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
+            if nivel[i][j] == 5:
+                pygame.draw.arc(tela, cor, [(j * num2 - (num2 * 0.4)) - 2, (i * num1 + (0.5 * num1)), num2, num1],
+                                0, PI / 2, 3)
+            if nivel[i][j] == 6:
+                pygame.draw.arc(tela, cor,
+                                [(j * num2 + (num2 * 0.5)), (i * num1 + (0.5 * num1)), num2, num1], PI / 2, PI, 3)
+            if nivel[i][j] == 7:
+                pygame.draw.arc(tela, cor, [(j * num2 + (num2 * 0.5)), (i * num1 - (0.4 * num1)), num2, num1], PI,
+                                3 * PI / 2, 3)
+            if nivel[i][j] == 8:
+                pygame.draw.arc(tela, cor,
+                                [(j * num2 - (num2 * 0.4)) - 2, (i * num1 - (0.4 * num1)), num2, num1], 3 * PI / 2,
+                                2 * PI, 3)
+            if nivel[i][j] == 9:
+                pygame.draw.line(tela, 'white', (j * num2, i * num1 + (0.5 * num1)),
+                                 (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
+
 
 def desenha_jogador():
     if direcao == 0:
@@ -1011,3 +1020,179 @@ while rodando:
         gato1_x, gato1_y, direcao_gato1 = gato1.mover_gato1()
 
     pontuacao, powerup_ativo, contador_powerup, fantasmas_comidos = checa_colisao(pontuacao, powerup_ativo, contador_powerup, fantasmas_comidos)
+
+    if not powerup_ativo:
+        if (circulo_jogador.colliderect(gato2.retangulo) and not gato2.morto) or \
+                (circulo_jogador.colliderect(gato3.retangulo) and not gato3.morto) or \
+                (circulo_jogador.colliderect(gato4.retangulo) and not gato4.morto) or \
+                (circulo_jogador.colliderect(gato1.retangulo) and not gato1.morto):
+            if vidas > 0:
+                vidas -= 1
+                contador_inicio = 0
+                powerup_ativo = False
+                contador_powerup = 0
+                jogador_x = 450
+                jogador_y = 663
+                direcao = 0
+                comando_direcao = 0
+                gato2_x = 56
+                gato2_y = 58
+                direcao_gato2 = 0
+                gato3_x = 440
+                gato3_y = 388
+                direcao_gato3 = 2
+                gato4_x = 440
+                gato4_y = 438
+                direcao_gato4 = 2
+                gato1_x = 440
+                gato1_y = 438
+                direcao_gato1 = 2
+                fantasmas_comidos = [False, False, False, False]
+                gato2_morto = False
+                gato3_morto = False
+                gato1_morto = False
+                gato4_morto = False
+            else:
+                jogo_encerrado = True
+                em_movimento = False
+                contador_inicio = 0
+    if powerup_ativo and circulo_jogador.colliderect(gato2.retangulo) and fantasmas_comidos[0] and not gato2.morto:
+        if vidas > 0:
+            powerup_ativo = False
+            contador_powerup = 0
+            vidas -= 1
+            contador_inicio = 0
+            jogador_x = 450
+            jogador_y = 663
+            direcao = 0
+            comando_direcao = 0
+            gato2_x = 56
+            gato2_y = 58
+            direcao_gato2 = 0
+            gato3_x = 440
+            gato3_y = 388
+            direcao_gato3 = 2
+            gato4_x = 440
+            gato4_y = 438
+            direcao_gato4 = 2
+            gato1_x = 440
+            gato1_y = 438
+            direcao_gato1 = 2
+            fantasmas_comidos = [False, False, False, False]
+            gato2_morto = False
+            gato3_morto = False
+            gato1_morto = False
+            gato4_morto = False
+        else:
+            jogo_encerrado = True
+            em_movimento = False
+            contador_inicio = 0
+    if powerup_ativo and circulo_jogador.colliderect(gato3.retangulo) and fantasmas_comidos[1] and not gato3.morto:
+        if vidas > 0:
+            powerup_ativo = False
+            contador_powerup = 0
+            vidas -= 1
+            contador_inicio = 0
+            jogador_x = 450
+            jogador_y = 663
+            direcao = 0
+            comando_direcao = 0
+            gato2_x = 56
+            gato2_y = 58
+            direcao_gato2 = 0
+            gato3_x = 440
+            gato3_y = 388
+            direcao_gato3 = 2
+            gato4_x = 440
+            gato4_y = 438
+            direcao_gato4 = 2
+            gato1_x = 440
+            gato1_y = 438
+            direcao_gato1 = 2
+            fantasmas_comidos = [False, False, False, False]
+            gato2_morto = False
+            gato3_morto = False
+            gato1_morto = False
+            gato4_morto = False
+        else:
+            jogo_encerrado = True
+            em_movimento = False
+            contador_inicio = 0
+    if powerup_ativo and circulo_jogador.colliderect(gato4.retangulo) and fantasmas_comidos[2] and not gato4.morto:
+        if vidas > 0:
+            powerup_ativo = False
+            contador_powerup = 0
+            vidas -= 1
+            contador_inicio = 0
+            jogador_x = 450
+            jogador_y = 663
+            direcao = 0
+            comando_direcao = 0
+            gato2_x = 56
+            gato2_y = 58
+            direcao_gato2 = 0
+            gato3_x = 440
+            gato3_y = 388
+            direcao_gato3 = 2
+            gato4_x = 440
+            gato4_y = 438
+            direcao_gato4 = 2
+            gato1_x = 440
+            gato1_y = 438
+            direcao_gato1 = 2
+            fantasmas_comidos = [False, False, False, False]
+            gato2_morto = False
+            gato3_morto = False
+            gato1_morto = False
+            gato4_morto = False
+        else:
+            jogo_encerrado = True
+            em_movimento = False
+            contador_inicio = 0
+    if powerup_ativo and circulo_jogador.colliderect(gato1.retangulo) and fantasmas_comidos[3] and not gato1.morto:
+        if vidas > 0:
+            powerup_ativo = False
+            contador_powerup = 0
+            vidas -= 1
+            contador_inicio = 0
+            jogador_x = 450
+            jogador_y = 663
+            direcao = 0
+            comando_direcao = 0
+            gato2_x = 56
+            gato2_y = 58
+            direcao_gato2 = 0
+            gato3_x = 440
+            gato3_y = 388
+            direcao_gato3 = 2
+            gato4_x = 440
+            gato4_y = 438
+            direcao_gato4 = 2
+            gato1_x = 440
+            gato1_y = 438
+            direcao_gato1 = 2
+            fantasmas_comidos = [False, False, False, False]
+            gato2_morto = False
+            gato3_morto = False
+            gato1_morto = False
+            gato4_morto = False
+        else:
+            jogo_encerrado = True
+            em_movimento = False
+            contador_inicio = 0
+    if powerup_ativo and circulo_jogador.colliderect(gato2.retangulo) and not gato2.morto and not fantasmas_comidos[0]:
+        gato2_morto = True
+        fantasmas_comidos[0] = True
+        pontuacao += (2 ** fantasmas_comidos.count(True)) * 100
+    if powerup_ativo and circulo_jogador.colliderect(gato3.retangulo) and not gato3.morto and not fantasmas_comidos[1]:
+        gato3_morto = True
+        fantasmas_comidos[1] = True
+        pontuacao += (2 ** fantasmas_comidos.count(True)) * 100
+    if powerup_ativo and circulo_jogador.colliderect(gato4.retangulo) and not gato4.morto and not fantasmas_comidos[2]:
+        gato4_morto = True
+        fantasmas_comidos[2] = True
+        pontuacao += (2 ** fantasmas_comidos.count(True)) * 100
+    if powerup_ativo and circulo_jogador.colliderect(gato1.retangulo) and not gato1.morto and not fantasmas_comidos[3]:
+        gato1_morto = True
+        fantasmas_comidos[3] = True
+        pontuacao += (2 ** fantasmas_comidos.count(True)) * 100
