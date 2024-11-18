@@ -24,6 +24,7 @@ fotos_gato3 = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/7.pn
 fotos_gato4 = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/8.png'), (45, 45))
 imagem_assustado = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/Hurt.png'), (45, 45))
 imagem_morto = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/Death.png'), (45, 45))
+musica_fundo = pygame.mixer.Sound("musica.mp3")
 jogador_x = 450
 jogador_y = 663
 direcao = 0
@@ -857,7 +858,7 @@ rodando = True
 
 def menu_inicio():
     while True:
-        tela.fill('black')
+        tela.fill('goldenrod2')
         fonte_menu = pygame.font.Font('freesansbold.ttf', 40)
         texto_jogar = fonte_menu.render("Jogar", True, 'white')
         texto_instrucoes = fonte_menu.render("Instruções", True, 'white')
@@ -888,7 +889,7 @@ def menu_inicio():
 
 def menu_instrucoes():
     while True:
-        tela.fill('black')
+        tela.fill('yellow')
         fonte_instrucoes = pygame.font.Font('freesansbold.ttf', 30)
         texto_instrucoes = fonte_instrucoes.render(
             "Objetivo: Comer todos os pontos sem ser pego pelos gatos!", True, 'white')
@@ -920,6 +921,7 @@ menu_inicio()
 # Loop principal do jogo
 while rodando:
     relogio.tick(fps)
+    musica_fundo.play()
 
     if contador < 19:
         contador += 1
