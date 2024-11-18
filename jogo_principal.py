@@ -97,6 +97,7 @@ class Fantasma:
         num2 = (LARGURA // 30)
         num3 = 15
         self.giros = [False, False, False, False]
+
         if 0 < self.centro_x // 30 < 29:
             if nivel[(self.centro_y - num3) // num1][self.centro_x // num2] == 9:
                 self.giros[2] = True
@@ -144,9 +145,9 @@ class Fantasma:
                             self.na_casa or self.morto)):
                         self.giros[3] = True
                     if nivel[(self.centro_y - num3) // num1][self.centro_x // num2] < 3 \
-                        or (nivel[(self.centro_y - num3) // num1][self.centro_x // num2] == 9 and (
-                        self.na_casa or self.morto)):
-                            self.giros[2] = True
+                            or (nivel[(self.centro_y - num3) // num1][self.centro_x // num2] == 9 and (
+                            self.na_casa or self.morto)):
+                        self.giros[2] = True
                 if 12 <= self.centro_y % num1 <= 18:
                     if nivel[self.centro_y // num1][(self.centro_x - num3) // num2] < 3 \
                             or (nivel[self.centro_y // num1][(self.centro_x - num3) // num2] == 9 and (
@@ -156,21 +157,24 @@ class Fantasma:
                             or (nivel[self.centro_y // num1][(self.centro_x + num3) // num2] == 9 and (
                             self.na_casa or self.morto)):
                         self.giros[0] = True
-            else:
-                self.giros[0] = True
-                self.giros[1] = True
+        else:
+            self.giros[0] = True
+            self.giros[1] = True
 
-            if 350 < self.pos_x < 550 and 370 < self.pos_y < 480:
-                    self.na_casa = True
-
-            else:
-                    self.na_casa = False
+        if 350 < self.pos_x < 550 and 370 < self.pos_y < 480:
+            self.na_casa = True
+        else:
+            self.na_casa = False
 
         return self.giros, self.na_casa
 
+
     def movimento_gato1(self):
+        # Atualiza as direções permitidas e verifica se o fantasma está na casa
+        self.giros, self.na_casa = self.verificar_colisoes()
+        
         # D, E, C, B (Direita, Esquerda, Cima, Baixo)
-        if self.direcao == 0:
+        if self.direcao == 0:  # Direção direita
             if self.alvo[0] > self.pos_x and self.giros[0]:
                 self.pos_x += self.velocidade
             elif not self.giros[0]:
@@ -196,14 +200,15 @@ class Fantasma:
                 if self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                if self.alvo[1] < self.pos_y and self.giros[2]:
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
                 else:
                     self.pos_x += self.velocidade
-        elif self.direcao == 1:
+        elif self.direcao == 1:  # Direção esquerda
             if self.alvo[1] > self.pos_y and self.giros[3]:
                 self.direcao = 3
+                self.pos_y += self.velocidade
             elif self.alvo[0] < self.pos_x and self.giros[1]:
                 self.pos_x -= self.velocidade
             elif not self.giros[1]:
@@ -229,17 +234,16 @@ class Fantasma:
                 if self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                if self.alvo[1] < self.pos_y and self.giros[2]:
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
                 else:
                     self.pos_x -= self.velocidade
-        elif self.direcao == 2:
+        elif self.direcao == 2:  # Direção cima
             if self.alvo[0] < self.pos_x and self.giros[1]:
                 self.direcao = 1
                 self.pos_x -= self.velocidade
             elif self.alvo[1] < self.pos_y and self.giros[2]:
-                self.direcao = 2
                 self.pos_y -= self.velocidade
             elif not self.giros[2]:
                 if self.alvo[0] > self.pos_x and self.giros[0]:
@@ -269,7 +273,7 @@ class Fantasma:
                     self.pos_x -= self.velocidade
                 else:
                     self.pos_y -= self.velocidade
-        elif self.direcao == 3:
+        elif self.direcao == 3:  # Direção baixo
             if self.alvo[1] > self.pos_y and self.giros[3]:
                 self.pos_y += self.velocidade
             elif not self.giros[3]:
@@ -303,115 +307,122 @@ class Fantasma:
         if self.pos_x < -30:
             self.pos_x = 900
         elif self.pos_x > 900:
-            self.pos_x - 30
+            self.pos_x = -30
         return self.pos_x, self.pos_y, self.direcao
-    
+
+
     def movimento_gato2(self):
-        if self.direcao == 0:
-            if self.alvo[0] > self.pos_x and self.alvo[0]:
+        # Atualiza as direções permitidas e verifica se o fantasma está na casa
+        self.giros, self.na_casa = self.verificar_colisoes()
+        
+        if self.direcao == 0:  # Direção direita
+            if self.alvo[0] > self.pos_x and self.giros[0]:
                 self.pos_x += self.velocidade
-            elif not self.alvo[0]:
-                if self.alvo[1] > self.pos_y and self.alvo[3]:
+            elif not self.giros[0]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                elif self.alvo[1] < self.pos_y and self.alvo[2]:
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.alvo[0] < self.pos_x and self.alvo[1]:
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
-                elif self.alvo[3]:
+                elif self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                elif self.alvo[2]:
+                elif self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.alvo[1]:
+                elif self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
-            elif self.alvo[0]:
+            elif self.giros[0]:
                 self.pos_x += self.velocidade
-        elif self.direcao == 1:
-            if self.alvo[0] < self.pos_x and self.alvo[1]:
+        elif self.direcao == 1:  # Direção esquerda
+            if self.alvo[0] < self.pos_x and self.giros[1]:
                 self.pos_x -= self.velocidade
-            elif not self.alvo[1]:
-                if self.alvo[1] > self.pos_y and self.alvo[3]:
+            elif not self.giros[1]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                elif self.alvo[1] < self.pos_y and self.alvo[2]:
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.alvo[0] > self.pos_x and self.alvo[0]:
+                elif self.alvo[0] > self.pos_x and self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
-                elif self.alvo[3]:
+                elif self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                elif self.alvo[2]:
+                elif self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.alvo[0]:
+                elif self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
-            elif self.alvo[1]:
+            elif self.giros[1]:
                 self.pos_x -= self.velocidade
-        elif self.direcao == 2:
-            if self.alvo[1] < self.pos_y and self.alvo[2]:
-                self.direcao = 2
+        elif self.direcao == 2:  # Direção cima
+            if self.alvo[1] < self.pos_y and self.giros[2]:
                 self.pos_y -= self.velocidade
-            elif not self.alvo[2]:
-                if self.alvo[0] > self.pos_x and self.alvo[0]:
+            elif not self.giros[2]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
-                elif self.alvo[0] < self.pos_x and self.alvo[1]:
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
-                elif self.alvo[1] > self.pos_y and self.alvo[3]:
+                elif self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                elif self.alvo[3]:
+                elif self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                elif self.alvo[0]:
+                elif self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
-                elif self.alvo[1]:
+                elif self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
-            elif self.alvo[2]:
+            elif self.giros[2]:
                 self.pos_y -= self.velocidade
-        elif self.direcao == 3:
-            if self.alvo[1] > self.pos_y and self.alvo[3]:
+        elif self.direcao == 3:  # Direção baixo
+            if self.alvo[1] > self.pos_y and self.giros[3]:
                 self.pos_y += self.velocidade
-            elif not self.alvo[3]:
-                if self.alvo[0] > self.pos_x and self.alvo[0]:
+            elif not self.giros[3]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
-                elif self.alvo[0] < self.pos_x and self.alvo[1]:
+                elif self.alvo[0] < self.pos_x and self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
-                elif self.alvo[1] < self.pos_y and self.alvo[2]:
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.alvo[2]:
+                elif self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.alvo[0]:
+                elif self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
-                elif self.alvo[1]:
+                elif self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
-            elif self.alvo[3]:
+            elif self.giros[3]:
                 self.pos_y += self.velocidade
         if self.pos_x < -30:
             self.pos_x = 900
         elif self.pos_x > 900:
-            self.pos_x - 30
+            self.pos_x = -30
         return self.pos_x, self.pos_y, self.direcao
-    
+
+
     def movimento_gato3(self):
-        if self.direcao == 0:
+        # Atualiza as direções permitidas e verifica se o fantasma está na casa
+        self.giros, self.na_casa = self.verificar_colisoes()
+        
+        if self.direcao == 0:  # Direção direita
             if self.alvo[0] > self.pos_x and self.giros[0]:
                 self.pos_x += self.velocidade
             elif not self.giros[0]:
@@ -437,14 +448,15 @@ class Fantasma:
                 if self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                if self.alvo[1] < self.pos_y and self.giros[2]:
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
                 else:
                     self.pos_x += self.velocidade
-        elif self.direcao == 1:
+        elif self.direcao == 1:  # Direção esquerda
             if self.alvo[1] > self.pos_y and self.giros[3]:
                 self.direcao = 3
+                self.pos_y += self.velocidade
             elif self.alvo[0] < self.pos_x and self.giros[1]:
                 self.pos_x -= self.velocidade
             elif not self.giros[1]:
@@ -470,14 +482,13 @@ class Fantasma:
                 if self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
-                if self.alvo[1] < self.pos_y and self.giros[2]:
+                elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
                 else:
                     self.pos_x -= self.velocidade
-        elif self.direcao == 2:
+        elif self.direcao == 2:  # Direção cima
             if self.alvo[1] < self.pos_y and self.giros[2]:
-                self.direcao = 2
                 self.pos_y -= self.velocidade
             elif not self.giros[2]:
                 if self.alvo[0] > self.pos_x and self.giros[0]:
@@ -500,7 +511,7 @@ class Fantasma:
                     self.pos_x += self.velocidade
             elif self.giros[2]:
                 self.pos_y -= self.velocidade
-        elif self.direcao == 3:
+        elif self.direcao == 3:  # Direção baixo
             if self.alvo[1] > self.pos_y and self.giros[3]:
                 self.pos_y += self.velocidade
             elif not self.giros[3]:
@@ -527,47 +538,53 @@ class Fantasma:
         if self.pos_x < -30:
             self.pos_x = 900
         elif self.pos_x > 900:
-            self.pos_x - 30
+            self.pos_x = -30
         return self.pos_x, self.pos_y, self.direcao
-    
+
+
+
     def movimento_gato4(self):
-        if self.direcao == 0:
+        # Atualiza as direções permitidas e verifica se o fantasma está na casa
+        self.giros, self.na_casa = self.verificar_colisoes()
+        
+        if self.direcao == 0:  # Direção direita
             if self.alvo[0] > self.pos_x and self.giros[0]:
                 self.pos_x += self.velocidade
             elif not self.giros[0]:
-                if self.alvo[1] > self.pos_y and self.giros[3]:
+                if self.alvo[0] < self.pos_x and self.giros[1]:
+                    self.direcao = 1
+                    self.pos_x -= self.velocidade
+                elif self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
                 elif self.alvo[1] < self.pos_y and self.giros[2]:
-                    self.direcao = 2
-                    self.pos_y -= self.velocidade
-                elif self.alvo[0] < self.pos_x and self.giros[1]:
-                    self.direcao = 1
-                    self.pos_x -= self.velocidade
-                elif self.giros[3]:
-                    self.direcao = 3
-                    self.pos_y += self.velocidade
-                elif self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
                 elif self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
+                elif self.giros[3]:
+                    self.direcao = 3
+                    self.pos_y += self.velocidade
+                elif self.giros[2]:
+                    self.direcao = 2
+                    self.pos_y -= self.velocidade
             elif self.giros[0]:
                 self.pos_x += self.velocidade
-        elif self.direcao == 1:
-            if self.alvo[1] > self.pos_y and self.giros[3]:
-                self.direcao = 3
-            elif self.alvo[0] < self.pos_x and self.giros[1]:
+        elif self.direcao == 1:  # Direção esquerda
+            if self.alvo[0] < self.pos_x and self.giros[1]:
                 self.pos_x -= self.velocidade
             elif not self.giros[1]:
-                if self.alvo[1] > self.pos_y and self.giros[3]:
+                if self.alvo[0] > self.pos_x and self.giros[0]:
+                    self.direcao = 0
+                    self.pos_x += self.velocidade
+                elif self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
                 elif self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.alvo[0] > self.pos_x and self.giros[0]:
+                elif self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
                 elif self.giros[3]:
@@ -576,60 +593,36 @@ class Fantasma:
                 elif self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
-                elif self.giros[0]:
-                    self.direcao = 0
-                    self.pos_x += self.velocidade
             elif self.giros[1]:
                 self.pos_x -= self.velocidade
-        elif self.direcao == 2:
+        elif self.direcao == 2:  # Direção cima
             if self.alvo[0] < self.pos_x and self.giros[1]:
                 self.direcao = 1
                 self.pos_x -= self.velocidade
-            elif self.alvo[1] < self.pos_y and self.giros[2]:
-                self.direcao = 2
-                self.pos_y -= self.velocidade
+            elif self.alvo[0] > self.pos_x and self.giros[0]:
+                self.direcao = 0
+                self.pos_x += self.velocidade
             elif not self.giros[2]:
-                if self.alvo[0] > self.pos_x and self.giros[0]:
-                    self.direcao = 0
-                    self.pos_x += self.velocidade
-                elif self.alvo[0] < self.pos_x and self.giros[1]:
-                    self.direcao = 1
-                    self.pos_x -= self.velocidade
-                elif self.alvo[1] > self.pos_y and self.giros[3]:
+                if self.alvo[1] > self.pos_y and self.giros[3]:
                     self.direcao = 3
                     self.pos_y += self.velocidade
                 elif self.giros[1]:
                     self.direcao = 1
                     self.pos_x -= self.velocidade
-                elif self.giros[3]:
-                    self.direcao = 3
-                    self.pos_y += self.velocidade
                 elif self.giros[0]:
                     self.direcao = 0
                     self.pos_x += self.velocidade
             elif self.giros[2]:
-                if self.alvo[0] > self.pos_x and self.giros[0]:
-                    self.direcao = 0
-                    self.pos_x += self.velocidade
-                elif self.alvo[0] < self.pos_x and self.giros[1]:
-                    self.direcao = 1
-                    self.pos_x -= self.velocidade
-                else:
-                    self.pos_y -= self.velocidade
-        elif self.direcao == 3:
-            if self.alvo[1] > self.pos_y and self.giros[3]:
-                self.pos_y += self.velocidade
+                self.pos_y -= self.velocidade
+        elif self.direcao == 3:  # Direção baixo
+            if self.alvo[0] < self.pos_x and self.giros[1]:
+                self.direcao = 1
+                self.pos_x -= self.velocidade
+            elif self.alvo[0] > self.pos_x and self.giros[0]:
+                self.direcao = 0
+                self.pos_x += self.velocidade
             elif not self.giros[3]:
-                if self.alvo[0] > self.pos_x and self.giros[0]:
-                    self.direcao = 0
-                    self.pos_x += self.velocidade
-                elif self.alvo[0] < self.pos_x and self.giros[1]:
-                    self.direcao = 1
-                    self.pos_x -= self.velocidade
-                elif self.alvo[1] < self.pos_y and self.giros[2]:
-                    self.direcao = 2
-                    self.pos_y -= self.velocidade
-                elif self.giros[2]:
+                if self.alvo[1] < self.pos_y and self.giros[2]:
                     self.direcao = 2
                     self.pos_y -= self.velocidade
                 elif self.giros[1]:
@@ -639,20 +632,13 @@ class Fantasma:
                     self.direcao = 0
                     self.pos_x += self.velocidade
             elif self.giros[3]:
-                if self.alvo[0] > self.pos_x and self.giros[0]:
-                    self.direcao = 0
-                    self.pos_x += self.velocidade
-                elif self.alvo[0] < self.pos_x and self.giros[1]:
-                    self.direcao = 1
-                    self.pos_x -= self.velocidade
-                else:
-                    self.pos_y += self.velocidade
+                self.pos_y += self.velocidade
         if self.pos_x < -30:
             self.pos_x = 900
         elif self.pos_x > 900:
-            self.pos_x - 30
+            self.pos_x = -30
         return self.pos_x, self.pos_y, self.direcao
-    
+
 def desenha_variavel():
     texto_pontuacao = fonte.render(f'Pontos: {pontuacao}', True, 'white')
     tela.blit(texto_pontuacao, (10, 920))
@@ -1010,11 +996,11 @@ while rodando:
         else:
             gato2_x, gato2_y, direcao_gato2 = gato2.movimento_gato1()
         if not gato4_morto and not gato4.na_casa:
-            gato4_x, gato4_y, direcao_gato4 = gato4.movimento_gato4()
+            gato4_x, gato4_y, direcao_gato4 = gato4.movimento_gato2()
         else:
             gato4_x, gato4_y, direcao_gato4 = gato4.movimento_gato1()
         if not gato3_morto and not gato3.na_casa:
-            gato3_x, gato3_y, direcao_gato3 = gato3.movimento_gato3()
+            gato3_x, gato3_y, direcao_gato3 = gato3.movimento_gato1()
         else:
             gato3_x, gato3_y, direcao_gato3 = gato3.movimento_gato1()
         gato1_x, gato1_y, direcao_gato1 = gato1.movimento_gato1()
