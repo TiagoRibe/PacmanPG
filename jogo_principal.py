@@ -1196,3 +1196,83 @@ while rodando:
         gato1_morto = True
         fantasmas_comidos[3] = True
         pontuacao += (2 ** fantasmas_comidos.count(True)) * 100
+
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            rodando = False
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_RIGHT:
+                comando_direcao = 0
+            if evento.key == pygame.K_LEFT:
+                comando_direcao = 1
+            if evento.key == pygame.K_UP:
+                comando_direcao = 2
+            if evento.key == pygame.K_DOWN:
+                comando_direcao = 3
+            if evento.key == pygame.K_SPACE and (jogo_encerrado or jogo_vencido):
+                powerup_ativo = False
+                contador_powerup = 0
+                vidas -= 1
+                contador_inicio = 0
+                jogador_x = 450
+                jogador_y = 663
+                direcao = 0
+                comando_direcao = 0
+                gato2_x = 56
+                gato2_y = 58
+                direcao_gato2 = 0
+                gato3_x = 440
+                gato3_y = 388
+                direcao_gato3 = 2
+                gato4_x = 440
+                gato4_y = 438
+                direcao_gato4 = 2
+                gato1_x = 440
+                gato1_y = 438
+                direcao_gato1 = 2
+                fantasmas_comidos = [False, False, False, False]
+                gato2_morto = False
+                gato3_morto = False
+                gato1_morto = False
+                gato4_morto = False
+                pontuacao = 0
+                vidas = 3
+                nivel = copy.deepcopy(tabuleiros)
+                jogo_encerrado = False
+                jogo_vencido = False
+
+        if evento.type == pygame.KEYUP:
+            if evento.key == pygame.K_RIGHT and comando_direcao == 0:
+                comando_direcao = direcao
+            if evento.key == pygame.K_LEFT and comando_direcao == 1:
+                comando_direcao = direcao
+            if evento.key == pygame.K_UP and comando_direcao == 2:
+                comando_direcao = direcao
+            if evento.key == pygame.K_DOWN and comando_direcao == 3:
+                comando_direcao = direcao
+
+    if comando_direcao == 0 and giros_permitidos[0]:
+        direcao = 0
+    if comando_direcao == 1 and giros_permitidos[1]:
+        direcao = 1
+    if comando_direcao == 2 and giros_permitidos[2]:
+        direcao = 2
+    if comando_direcao == 3 and giros_permitidos[3]:
+        direcao = 3
+
+    if jogador_x > 900:
+        jogador_x = -47
+    elif jogador_x < -50:
+        jogador_x = 897
+
+    if gato2.in_box and blinky_dead:
+        blinky_dead = False
+    if gato3.in_box and inky_dead:
+        inky_dead = False
+    if gato4.in_box and pinky_dead:
+        pinky_dead = False
+    if gato1.in_box and clyde_dead:
+        clyde_dead = False
+
+    pygame.display.flip()
+pygame.quit()
