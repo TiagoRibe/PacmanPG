@@ -889,7 +889,7 @@ def menu_inicio():
 
 def menu_instrucoes():
     while True:
-        tela.fill('yellow')
+        tela.fill('goldenrod1')
         fonte_instrucoes = pygame.font.Font('freesansbold.ttf', 30)
         texto_instrucoes = fonte_instrucoes.render(
             "Objetivo: Comer todos os pontos sem ser pego pelos gatos!", True, 'white')
@@ -1253,13 +1253,13 @@ while rodando:
     elif jogador_x < -50:
         jogador_x = 897
 
-    if gato2_na_casa and gato2_morto:
+    if gato2.na_casa and gato2_morto:
         gato2_morto = False
-    if gato3_na_casa and gato3_morto:
+    if gato3.na_casa and gato3_morto:
         gato3_morto = False
-    if gato4_na_casa and gato4_morto:
+    if gato4.na_casa and gato4_morto:
         gato4_morto = False
-    if gato1_na_casa and gato1_morto:
+    if gato1.na_casa and gato1_morto:
         gato1_morto = False
 
     pygame.display.flip()
