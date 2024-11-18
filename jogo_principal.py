@@ -17,13 +17,19 @@ cor = 'azul'
 PI = math.pi
 fotos_rato = []
 for i in range(1, 5):
-    fotos_rato.append(pygame.transform.scale(pygame.image.load(f'assets/player_images/{i}.png'), (45, 45)))
-imagem_gato2 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/red.png'), (45, 45))
-imagem_gato4 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/pink.png'), (45, 45))
-imagem_gato3 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/blue.png'), (45, 45))
-imagem_gato1 = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/orange.png'), (45, 45))
-imagem_assustado = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/powerup.png'), (45, 45))
-imagem_morto = pygame.transform.scale(pygame.image.load(f'assets/ghost_images/dead.png'), (45, 45))
+    fotos_rato.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_rato/{i}.png'), (45, 45)))
+fotos_gato1 = []
+fotos_gato2 = []
+fotos_gato3 = []
+fotos_gato4 = []
+for j in range(5,11):
+    fotos_gato1.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
+    fotos_gato2.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
+    fotos_gato3.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
+    fotos_gato4.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/{j}.png'), (45, 45)))
+
+imagem_assustado = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/Hurt.png'), (45, 45))
+imagem_morto = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gatos/Death.png'), (45, 45))
 jogador_x = 450
 jogador_y = 663
 direcao = 0
@@ -990,13 +996,13 @@ while rodando:
     circulo_jogador = pygame.draw.circle(tela, 'black', (centro_x, centro_y), 20, 2)
     desenha_jogador()
 
-    gato2 = Fantasma(gato2_x, gato2_y, alvos[0], velocidades_gatos[0], imagem_gato2, direcao_gato2, gato2_morto, 
+    gato2 = Fantasma(gato2_x, gato2_y, alvos[0], velocidades_gatos[0], fotos_gato2, direcao_gato2, gato2_morto, 
                  gato2_na_casa, 0)
-    gato3 = Fantasma(gato3_x, gato3_y, alvos[1], velocidades_gatos[1], imagem_gato3, direcao_gato3, gato3_morto, 
+    gato3 = Fantasma(gato3_x, gato3_y, alvos[1], velocidades_gatos[1], fotos_gato3, direcao_gato3, gato3_morto, 
                  gato3_na_casa, 1)
-    gato4 = Fantasma(gato4_x, gato4_y, alvos[2], velocidades_gatos[2], imagem_gato4, direcao_gato4, gato4_morto, 
+    gato4 = Fantasma(gato4_x, gato4_y, alvos[2], velocidades_gatos[2], fotos_gato4, direcao_gato4, gato4_morto, 
                  gato4_na_casa, 2)
-    gato1 = Fantasma(gato1_x, gato1_y, alvos[3], velocidades_gatos[3], imagem_gato1, direcao_gato1, gato1_morto, 
+    gato1 = Fantasma(gato1_x, gato1_y, alvos[3], velocidades_gatos[3], fotos_gato1, direcao_gato1, gato1_morto, 
                  gato1_na_casa, 3)
 
     desenha_variavel()
