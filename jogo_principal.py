@@ -13,21 +13,15 @@ relogio = pygame.time.Clock()
 fps = 60
 fonte = pygame.font.Font('freesansbold.ttf', 20)
 nivel = copy.deepcopy(tabuleiros)
-cor = 'azul'
+cor = 'blue'
 PI = math.pi
 fotos_rato = []
 for i in range(1, 5):
     fotos_rato.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_rato/{i}.png'), (45, 45)))
-fotos_gato1 = []
-fotos_gato2 = []
-fotos_gato3 = []
-fotos_gato4 = []
-for j in range(5,11):
-    fotos_gato1.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
-    fotos_gato2.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
-    fotos_gato3.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
-    fotos_gato4.append(pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/{j}.png'), (45, 45)))
-
+fotos_gato1 = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/5.png'), (45, 45))
+fotos_gato2 = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/6.png'), (45, 45))
+fotos_gato3 = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/7.png'), (45, 45))
+fotos_gato4 = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/8.png'), (45, 45))
 imagem_assustado = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/Hurt.png'), (45, 45))
 imagem_morto = pygame.transform.scale(pygame.image.load(f'Imagens/Fotos_gato/Death.png'), (45, 45))
 jogador_x = 450
@@ -1012,18 +1006,18 @@ while rodando:
     if em_movimento:
         jogador_x, jogador_y = movimentacao(jogador_x, jogador_y)
         if not gato2_morto and not gato2.na_casa:
-            gato2_x, gato2_y, direcao_gato2 = gato2.mover_gato2()
+            gato2_x, gato2_y, direcao_gato2 = gato2.movimento_gato2()
         else:
-            gato2_x, gato2_y, direcao_gato2 = gato2.mover_gato1()
+            gato2_x, gato2_y, direcao_gato2 = gato2.movimento_gato1()
         if not gato4_morto and not gato4.na_casa:
-            gato4_x, gato4_y, direcao_gato4 = gato4.mover_gato4()
+            gato4_x, gato4_y, direcao_gato4 = gato4.movimento_gato4()
         else:
-            gato4_x, gato4_y, direcao_gato4 = gato4.mover_gato1()
+            gato4_x, gato4_y, direcao_gato4 = gato4.movimento_gato1()
         if not gato3_morto and not gato3.na_casa:
-            gato3_x, gato3_y, direcao_gato3 = gato3.mover_gato3()
+            gato3_x, gato3_y, direcao_gato3 = gato3.movimento_gato3()
         else:
-            gato3_x, gato3_y, direcao_gato3 = gato3.mover_gato1()
-        gato1_x, gato1_y, direcao_gato1 = gato1.mover_gato1()
+            gato3_x, gato3_y, direcao_gato3 = gato3.movimento_gato1()
+        gato1_x, gato1_y, direcao_gato1 = gato1.movimento_gato1()
 
     pontuacao, powerup_ativo, contador_powerup, fantasmas_comidos = checa_colisao(pontuacao, powerup_ativo, contador_powerup, fantasmas_comidos)
 
@@ -1271,14 +1265,14 @@ while rodando:
     elif jogador_x < -50:
         jogador_x = 897
 
-    if gato2.in_box and blinky_dead:
-        blinky_dead = False
-    if gato3.in_box and inky_dead:
-        inky_dead = False
-    if gato4.in_box and pinky_dead:
-        pinky_dead = False
-    if gato1.in_box and clyde_dead:
-        clyde_dead = False
+    if gato2_na_casa and gato2_morto:
+        gato2_morto = False
+    if gato3_na_casa and gato3_morto:
+        gato3_morto = False
+    if gato4_na_casa and gato4_morto:
+        gato4_morto = False
+    if gato1_na_casa and gato1_morto:
+        gato1_morto = False
 
     pygame.display.flip()
 pygame.quit()
